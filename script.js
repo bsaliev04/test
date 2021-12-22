@@ -3,33 +3,44 @@ const todoInput = document.querySelector(".todo-input")
 const todoButton = document.querySelector(".todo-button")
 const todoList = document.querySelector(".todo-list") //ul
 const filterOption = document.querySelector(".filter-todo")
+const alert = document.querySelector(".alert")
 
 //functions
 const addTodo = (event) => {
     //prevents button from submitting the form
     event.preventDefault()
-    //creating todoDiv
-    const todoDiv = document.createElement("div")
-    todoDiv.classList.add("todoDiv")
-    //create LI
-    const newTodo = document.createElement("li")
-    newTodo.classList.add("todo-item")
-    newTodo.innerText = todoInput.value
-    todoDiv.appendChild(newTodo)
-    //creating completed button
-    const completedButton = document.createElement("button")
-    completedButton.classList.add("completed-btn")
-    completedButton.innerHTML = '<i class="fas fa-check"></i>'
-    todoDiv.appendChild(completedButton)
-    //creating delete button
-    const deleteButton = document.createElement("button")
-    deleteButton.classList.add("delete-btn")
-    deleteButton.innerHTML = '<i class="fas fa-trash"></i>'
-    todoDiv.appendChild(deleteButton)
-    //append todoDiv to UL
-    todoList.appendChild(todoDiv)
-    //clearing input
-    todoInput.value = ""
+    if (!todoInput.value) {
+        alert.innerText = "Please enter a valid text"
+        alert.style.visibility = "visible"
+        alert.classList.add("error")
+        setTimeout(() => {
+            alert.style.visibility = "hidden"
+            alert.classList.remove("error")
+        }, 1500)
+    } else {
+        //creating todoDiv
+        const todoDiv = document.createElement("div")
+        todoDiv.classList.add("todoDiv")
+        todoDiv.innerHTML = `
+            <li class="todo-item">${todoInput.value}</li>
+            <button class="completed-btn">
+                <i class="fas fa-check"></i>
+            </button>
+            <button class="delete-btn">
+                <i class="fas fa-trash"></i>
+            </button>`
+        //append todoDiv to UL
+        todoList.appendChild(todoDiv)
+        //clearing input
+        todoInput.value = "";
+        alert.innerText = "Item Succesfully Added!"
+        alert.style.visibility = "visible"
+        alert.classList.add("success")
+        setTimeout(() => {
+            alert.style.visibility = "hidden"
+            alert.classList.remove("success")
+        }, 1500)
+    }   
 }
 
 const deleteComplete = (event) => {
