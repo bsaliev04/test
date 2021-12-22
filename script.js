@@ -31,6 +31,7 @@ const addTodo = (event) => {
             </button>`
         //append todoDiv to UL
         todoList.appendChild(todoDiv)
+        saveLocalTodos(todoInput.value)
         //clearing input
         todoInput.value = "";
         alert.innerText = "Item Succesfully Added!"
@@ -81,7 +82,45 @@ const filterTodo = (event) => {
         }
     })
 }
+
+const saveLocalTodos = (todo) => {
+    let todos;
+    if (localStorage.getItem("todos") === null) {
+        todos = []
+    } else {
+        todos = JSON.parse(localStorage.getItem("todos"))
+    }
+    todos.push(todo) // [milk]
+    localStorage.setItem("todos", JSON.stringify(todos))
+}
+
+const getData = () => {
+    let todos;
+    if (localStorage.getItem("todos") == null) {
+        todos = []
+    } else {
+        todos = JSON.parse(localStorage.getItem("todos"))
+    }
+    console.log(todos, "todos")
+    todos.forEach(function(todo){
+        console.log("each todo", todo)
+        const todoDiv = document.createElement("div")
+        todoDiv.classList.add("todoDiv")
+        todoDiv.innerHTML = `
+            <li class="todo-item">${todo}</li>
+            <button class="completed-btn">
+                <i class="fas fa-check"></i>
+            </button>
+            <button class="delete-btn">
+                <i class="fas fa-trash"></i>
+            </button>`
+        //append todoDiv to UL
+        todoList.appendChild(todoDiv)
+    })
+}
+
 //event-listeners
 todoButton.addEventListener("click", addTodo)
 todoList.addEventListener("click", deleteComplete)
 filterOption.addEventListener("click", filterTodo)
+document.addEventListener("DOMContentLoaded", getData)
