@@ -16,7 +16,7 @@ const addTodo = (event) => {
         setTimeout(() => {
             alert.style.visibility = "hidden"
             alert.classList.remove("error")
-        }, 1500)
+        }, 500)
     } else {
         //creating todoDiv
         const todoDiv = document.createElement("div")
@@ -40,7 +40,7 @@ const addTodo = (event) => {
         setTimeout(() => {
             alert.style.visibility = "hidden"
             alert.classList.remove("success")
-        }, 1500)
+        }, 500)
     }   
 }
 
@@ -49,6 +49,7 @@ const deleteComplete = (event) => {
     if (item.classList.contains("delete-btn")) {
         const todo = item.parentElement;
         todo.classList.add("fall")
+        removeLocalTodos(todo)
         todo.addEventListener("transitionend", () => {
             todo.remove()
         })
@@ -101,9 +102,7 @@ const getData = () => {
     } else {
         todos = JSON.parse(localStorage.getItem("todos"))
     }
-    console.log(todos, "todos")
     todos.forEach(function(todo){
-        console.log("each todo", todo)
         const todoDiv = document.createElement("div")
         todoDiv.classList.add("todoDiv")
         todoDiv.innerHTML = `
@@ -117,6 +116,22 @@ const getData = () => {
         //append todoDiv to UL
         todoList.appendChild(todoDiv)
     })
+}
+
+const removeLocalTodos = (todo) => {
+    let todos;
+    if (localStorage.getItem("todos") == null) {
+        todos = []
+    } else {
+        todos = JSON.parse(localStorage.getItem("todos"))
+    }
+    const text = todo.children[0].innerText
+    
+    console.log(text)
+    let startIndex = todos.indexOf(text)
+    todos.splice(startIndex, 1)
+    console.log(todos)
+    localStorage.setItem("todos", JSON.stringify(todos))
 }
 
 //event-listeners
